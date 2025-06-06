@@ -84,7 +84,7 @@ public class EntityRendererMixin {
         } else if (player.isInWater()) {
             // maybe Aqua Acrobatics integration later?
             config.applySwimmingModifiers();
-        } else if (!player.onGround) {
+        } else if (player.capabilities.isFlying) {
             config.applyFlyingModifiers();
         }
     }
