@@ -22,11 +22,11 @@ public class COConfig {
 
         @Config.Comment("Vertical pitch effect intensity from jumping/falling")
         @Config.RangeDouble(min = 0.0, max = 10.0)
-        public float verticalPitchFactor = 3.0F;
+        public float verticalPitchFactor = 5.0F;
 
         @Config.Comment("Vertical movement smoothing factor")
         @Config.RangeDouble(min = 0.0, max = 2.0)
-        public float verticalSmoothingFactor = 1.0F;
+        public float verticalSmoothingFactor = 1.5F;
 
         @Config.Comment("Forward movement pitch effect intensity")
         @Config.RangeDouble(min = 0.0, max = 10.0)
