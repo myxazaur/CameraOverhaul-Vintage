@@ -10,6 +10,7 @@ import static ua.myxazaur.vintagecam.CameraOverhaul.MOD_ID;
 
 @Config(modid = MOD_ID)
 public class COConfig {
+    @Config.Name("Camera Config")
     @Config.Comment("Camera effect configuration")
     public static final CameraConfig cameraConfig = new CameraConfig();
 
