@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ua.myxazaur.vintagecam.camera.CameraSystem;
 
 @Mixin(EntityRenderer.class)
-public class EntityRendererMixin {
+public abstract class EntityRendererMixin {
     private final CameraSystem cameraSystem = new CameraSystem();
 
     @Inject(method = "orientCamera", at = @At("HEAD"))
