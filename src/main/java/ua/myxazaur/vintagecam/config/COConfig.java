@@ -72,6 +72,22 @@ public class COConfig {
         @Config.Comment("Sway fade-out duration")
         @Config.RangeDouble(min = 0.0, max = 5.0)
         public float swayFadeOutLength = 0.5F;
+
+        @Config.Comment("Base trauma amount from explosions/lightning bolt strikes")
+        @Config.RangeDouble(min = 0.0, max = 5.0)
+        public float explosionTraumaBase = 0.8F;
+
+        @Config.Comment("Speed at which explosion trauma recovers")
+        @Config.RangeDouble(min = 0.0, max = 1.0)
+        public float explosionRecoverySpeed = 0.05F;
+
+        @Config.Comment("Maximum angle of camera shake from explosions/lightning bolt strikes")
+        @Config.RangeDouble(min = 0.0, max = 180.0)
+        public float explosionMaxAngle = 30.0F;
+
+        @Config.Comment("Frequency of camera shake oscillations from explosions/lightning bolt strikes")
+        @Config.RangeDouble(min = 0.0, max = 30.0)
+        public float explosionFrequency = 5.0F;
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID)

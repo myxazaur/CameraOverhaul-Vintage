@@ -5,14 +5,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ua.myxazaur.vintagecam.camera.CameraSystem;
+import ua.myxazaur.vintagecam.CameraOverhaul;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin {
-    private final CameraSystem cameraSystem = new CameraSystem();
-
     @Inject(method = "orientCamera", at = @At("HEAD"))
     private void addCameraTilt(float partialTicks, CallbackInfo ci) {
-        cameraSystem.updateCamera(partialTicks);
+        if (CameraOverhaul.instance != null) {
+            CameraOverhaul.instance.getCameraSystem().updateCamera(partialTicks);
+        }
     }
 }

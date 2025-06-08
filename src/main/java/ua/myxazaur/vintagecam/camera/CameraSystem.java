@@ -8,6 +8,7 @@ import ua.myxazaur.vintagecam.utils.*;
 import static ua.myxazaur.vintagecam.config.COConfig.cameraConfig;
 
 public class CameraSystem {
+    private final ShakeSystem shakeSystem = new ShakeSystem();
     private final CameraUtils.ConfigContext config = new CameraUtils.ConfigContext();
     private final CameraUtils.Transform transform = new CameraUtils.Transform();
     private final Vector3d prevVelocity = new Vector3d();
@@ -59,11 +60,16 @@ public class CameraSystem {
     private void applyCameraEffects(EntityPlayerSP player, boolean isFirstPerson, Vector3d eulerRot, float time, float partialTicks) {
         verticalVelocityPitchOffset(player, partialTicks);
         forwardVelocityPitchOffset(player, partialTicks);
-
         strafingRollOffset(player, partialTicks);
         turningRollOffset(player, isFirstPerson, eulerRot, partialTicks);
-
         noiseOffset(time, partialTicks);
+
+        shakeSystem.update(partialTicks);
+
+        if (shakeSystem.isShaking()) {
+            Vector3d shakeOffset = shakeSystem.getShakeOffset();
+            transform.eulerRot.add(shakeOffset);
+        }
     }
 
     private void applyRotations() {
@@ -162,4 +168,9 @@ public class CameraSystem {
     private static double turningEasing(double x) {
         return x < 0.5 ? (4 * x * x * x) : (1 - Math.pow(-2 * x + 2, 3) / 2);
     }
+
+    public ShakeSystem getShakeSystem() {
+        return shakeSystem;
+    }
+
 }
