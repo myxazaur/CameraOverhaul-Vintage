@@ -18,8 +18,6 @@ public abstract class LightningBoltMixin {
     //@Inject(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/effect/EntityLightningBolt;setDead()V"))
     @Inject(method = "<init>(Lnet/minecraft/world/World;DDDZ)V", at = @At("TAIL"))
     private void onStrike(World worldIn, double x, double y, double z, boolean effectOnlyIn, CallbackInfo ci) {
-        //if (!Thread.currentThread().getName().equals("Client thread")) return;
-
         Minecraft mc = Minecraft.getMinecraft();
 
         if (mc.player == null || CameraOverhaul.instance == null) return;
@@ -28,12 +26,12 @@ public abstract class LightningBoltMixin {
         Vec3d playerPos = mc.player.getPositionVector();
 
         double distance = lightningPos.distanceTo(playerPos);
-        double maxDistance = 48.0; // Увеличенная дистанция для молнии, так как гром слышен издалека
+        double maxDistance = 48.0;
 
         if (distance > maxDistance) return;
 
         double trauma = (1.0 - (distance / maxDistance)) *
-                          COConfig.cameraConfig.explosionTraumaBase * 0.4; // Множитель 0.4 для более мягкого эффекта
+                          COConfig.cameraConfig.explosionTraumaBase * 0.4;
 
         CameraSystem cameraSystem = CameraOverhaul.instance.getCameraSystem();
         if (cameraSystem == null || cameraSystem.getShakeSystem() == null) return;
