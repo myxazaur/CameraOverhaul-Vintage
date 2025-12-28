@@ -1,0 +1,68 @@
+cameraoverhaul.config.title=CameraOverhaul Configuration
+cameraoverhaul.config.subtitle=Customize camera behavior
+cameraoverhaul.config.category.general=General Settings
+cameraoverhaul.config.category.contextual=Contextual Settings
+
+# Contexts
+cameraoverhaul.config.category.walking=Walking
+cameraoverhaul.config.category.swimming=Swimming
+cameraoverhaul.config.category.flying=Flying
+cameraoverhaul.config.category.mounts=Mounts
+cameraoverhaul.config.category.vehicles=Vehicles
+
+# Sections
+cameraoverhaul.config.section.turningRoll=Turning Roll
+cameraoverhaul.config.section.cameraSway=Camera Sway
+cameraoverhaul.config.section.screenShakes=Screen Shakes
+
+# Options
+cameraoverhaul.config.enabled=Enabled
+cameraoverhaul.config.enabled.desc=Toggles all of the mod's features.
+cameraoverhaul.config.enableInThirdPerson=Third Person
+cameraoverhaul.config.enableInThirdPerson.desc=Disable this to make the mod's effects exclusive to first-person view.
+
+cameraoverhaul.config.strafingRollFactor=Strafing Roll
+cameraoverhaul.config.strafingRollFactor.desc=Strength of the camera roll rotation caused by strafing, or sideway horizontal velocity.
+cameraoverhaul.config.forwardVelocityPitchFactor=Forward Pitch
+cameraoverhaul.config.forwardVelocityPitchFactor.desc=Strength of camera pitch rotations caused by moving forward or backwards.
+cameraoverhaul.config.verticalVelocityPitchFactor=Vertical Pitch
+cameraoverhaul.config.verticalVelocityPitchFactor.desc=Strength of camera pitch rotations caused by vertical velocity.
+cameraoverhaul.config.horizontalVelocitySmoothingFactor=H. Smoothing
+cameraoverhaul.config.horizontalVelocitySmoothingFactor.desc=Smoothness of camera pitch & roll rotations caused by moving horizontally.
+cameraoverhaul.config.verticalVelocitySmoothingFactor=V. Smoothing
+cameraoverhaul.config.verticalVelocitySmoothingFactor.desc=Smoothness of camera pitch rotations caused by moving vertically.
+
+cameraoverhaul.config.turningRollAccumulation=Accumulation
+cameraoverhaul.config.turningRollAccumulation.desc=Sensitivity of the camera roll rotation caused by turning around horizontally.
+cameraoverhaul.config.turningRollIntensity=Intensity
+cameraoverhaul.config.turningRollIntensity.desc=Maximum strength of the camera roll rotation caused by turning around horizontally.
+cameraoverhaul.config.turningRollSmoothing=Smoothing
+cameraoverhaul.config.turningRollSmoothing.desc=Smoothness of the decay of the camera roll rotation caused by turning around horizontally.
+
+cameraoverhaul.config.cameraSwayIntensity=Intensity
+cameraoverhaul.config.cameraSwayIntensity.desc=Strength of smooth random sway that kicks in when the player idles for enough time.
+cameraoverhaul.config.cameraSwayFrequency=Frequency
+cameraoverhaul.config.cameraSwayFrequency.desc=Frequency of smooth random sway that kicks in when the player idles for enough time.
+cameraoverhaul.config.cameraSwayFadeInDelay=Fade In Delay
+cameraoverhaul.config.cameraSwayFadeInDelay.desc=Amount of time that the player must idle for before smooth random sway starts to fade-in.
+cameraoverhaul.config.cameraSwayFadeInLength=Fade In Length
+cameraoverhaul.config.cameraSwayFadeInLength.desc=Amount of time it takes for smooth random sway to fade-in after the player idles for enough time.
+cameraoverhaul.config.cameraSwayFadeOutLength=Fade Out Length
+cameraoverhaul.config.cameraSwayFadeOutLength.desc=Amount of time it takes for smooth random sway to fade-out when the player starts moving after idling.
+
+cameraoverhaul.config.screenShakesMaxIntensity=Max Intensity
+cameraoverhaul.config.screenShakesMaxIntensity.desc=Maximum strength of all screen shaking effects.
+cameraoverhaul.config.screenShakesMaxFrequency=Max Frequency
+cameraoverhaul.config.screenShakesMaxFrequency.desc=Speed at which screen shaking rotations change direction or oscillate.
+cameraoverhaul.config.explosionTrauma=Explosion Trauma
+cameraoverhaul.config.explosionTrauma.desc=A [0..1] value linked to the strength of screen shaking caused by explosions.
+cameraoverhaul.config.thunderTrauma=Thunder Trauma
+cameraoverhaul.config.thunderTrauma.desc=A [0..1] value linked to the strength of screen shaking caused by lightning bolt-tied thunder.
+cameraoverhaul.config.handSwingTrauma=Swing Trauma
+cameraoverhaul.config.handSwingTrauma.desc=A [0..1] value linked to the strength of screen shaking caused by any actions that swing the player's arm. Best kept very low.
+
+cameraoverhaul.gui.modified=(Modified)
+cameraoverhaul.gui.default=Default: %s
+cameraoverhaul.gui.reset_to_default=Reset to default
+cameraoverhaul.gui.enabled=Enabled
+cameraoverhaul.gui.disabled=Disabled

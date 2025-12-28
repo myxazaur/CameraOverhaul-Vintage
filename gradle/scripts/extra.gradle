@@ -3,3 +3,20 @@
 
 // If you wish to use the default helper methods, uncomment the line below
 // apply from: 'gradle/scripts/helpers.gradle'
+
+tasks.named('jar', Jar).configure {
+    archiveClassifier = 'thin'
+}
+
+tasks.named('reobfJar').configure {
+    inputJar.set(tasks.named('shadowJar').flatMap { it.archiveFile })
+}
+
+tasks.shadowJar {
+    archiveClassifier = ''
+    configurations = [ project.configurations.shade ]
+
+    relocate 'org.joml', 'ua.myxazaur.cameraoverhaul.shadow.joml'
+    mergeServiceFiles()
+}
+

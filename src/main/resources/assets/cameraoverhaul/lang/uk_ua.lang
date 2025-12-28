@@ -1,0 +1,69 @@
+cameraoverhaul.config.title=Налаштування CameraOverhaul
+cameraoverhaul.config.subtitle=Налаштуйте поведінку камери
+cameraoverhaul.config.category.general=Загальні налаштування
+cameraoverhaul.config.category.contextual=Контекстні налаштування
+
+# Контексти
+cameraoverhaul.config.category.walking=Ходьба
+cameraoverhaul.config.category.swimming=Плавання
+cameraoverhaul.config.category.flying=Політ
+cameraoverhaul.config.category.mounts=Тварини
+cameraoverhaul.config.category.vehicles=Транспорт
+
+# Секції
+cameraoverhaul.config.section.turningRoll=Крен під час повороту
+cameraoverhaul.config.section.cameraSway=Розгойдування
+cameraoverhaul.config.section.screenShakes=Тряска екрана
+
+# Опції
+cameraoverhaul.config.enabled=Увімкнено
+cameraoverhaul.config.enabled.desc=Вмикає або вимикає всі функції моду.
+cameraoverhaul.config.enableInThirdPerson=Від 3-ї особи
+cameraoverhaul.config.enableInThirdPerson.desc=Вимкніть, щоб ефекти моду працювали лише у режимі від першої особи.
+
+cameraoverhaul.config.strafingRollFactor=Крен під час стрейфу
+cameraoverhaul.config.strafingRollFactor.desc=Сила крену камери, спричиненого боковим рухом або горизонтальною бічною швидкістю.
+cameraoverhaul.config.forwardVelocityPitchFactor=Тангаж (Уперед)
+cameraoverhaul.config.forwardVelocityPitchFactor.desc=Інтенсивність нахилів камери, спричинених рухом уперед або назад.
+cameraoverhaul.config.verticalVelocityPitchFactor=Тангаж (Вертикаль)
+cameraoverhaul.config.verticalVelocityPitchFactor.desc=Інтенсивність нахилів камери, спричинених вертикальною швидкістю.
+cameraoverhaul.config.horizontalVelocitySmoothingFactor=Згладж. гориз.
+cameraoverhaul.config.horizontalVelocitySmoothingFactor.desc=Плавність нахилів і крену, спричинених горизонтальним переміщенням.
+cameraoverhaul.config.verticalVelocitySmoothingFactor=Згладж. верт.
+cameraoverhaul.config.verticalVelocitySmoothingFactor.desc=Плавність нахилів камери, спричинених вертикальним переміщенням.
+
+cameraoverhaul.config.turningRollAccumulation=Накопичення
+cameraoverhaul.config.turningRollAccumulation.desc=Чутливість крену камери, спричиненого горизонтальним поворотом миші.
+cameraoverhaul.config.turningRollIntensity=Інтенсивність
+cameraoverhaul.config.turningRollIntensity.desc=Максимальна сила крену камери під час повороту миші.
+cameraoverhaul.config.turningRollSmoothing=Згладжування
+cameraoverhaul.config.turningRollSmoothing.desc=Плавність затухання крену камери після повороту.
+
+cameraoverhaul.config.cameraSwayIntensity=Інтенсивність
+cameraoverhaul.config.cameraSwayIntensity.desc=Сила випадкового розгойдування, коли гравець бездіє.
+cameraoverhaul.config.cameraSwayFrequency=Частота
+cameraoverhaul.config.cameraSwayFrequency.desc=Частота випадкового розгойдування під час бездіяльності.
+cameraoverhaul.config.cameraSwayFadeInDelay=Затримка появи
+cameraoverhaul.config.cameraSwayFadeInDelay.desc=Час бездіяльності до початку появи розгойдування.
+cameraoverhaul.config.cameraSwayFadeInLength=Тривалість появи
+cameraoverhaul.config.cameraSwayFadeInLength.desc=Час плавного наростання ефекту розгойдування.
+cameraoverhaul.config.cameraSwayFadeOutLength=Тривалість затухання
+cameraoverhaul.config.cameraSwayFadeOutLength.desc=Час зникнення розгойдування після початку руху.
+
+cameraoverhaul.config.screenShakesMaxIntensity=Макс. інтенсивність
+cameraoverhaul.config.screenShakesMaxIntensity.desc=Максимальна сила всіх ефектів тряски екрана.
+cameraoverhaul.config.screenShakesMaxFrequency=Макс. частота
+cameraoverhaul.config.screenShakesMaxFrequency.desc=Швидкість коливань тряски екрана.
+cameraoverhaul.config.explosionTrauma=Тряска (Вибухи)
+cameraoverhaul.config.explosionTrauma.desc=Сила тряски екрана під час вибухів (0.0 – 1.0).
+cameraoverhaul.config.thunderTrauma=Тряска (Грім)
+cameraoverhaul.config.thunderTrauma.desc=Сила тряски екрана під час удару блискавки (0.0 – 1.0).
+cameraoverhaul.config.handSwingTrauma=Тряска (Рука)
+cameraoverhaul.config.handSwingTrauma.desc=Сила тряски екрана під час замахів рукою. Рекомендується дуже низьке значення.
+
+cameraoverhaul.gui.modified=(Змінено)
+cameraoverhaul.gui.default=За замовчуванням: %s
+cameraoverhaul.gui.reset_to_default=Скинути за замовчуванням
+cameraoverhaul.gui.enabled=Увімкнено
+cameraoverhaul.gui.disabled=Вимкнено
+
