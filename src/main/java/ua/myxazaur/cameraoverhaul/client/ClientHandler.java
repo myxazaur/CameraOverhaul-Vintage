@@ -11,18 +11,16 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
-import ua.myxazaur.cameraoverhaul.CameraOverhaul;
 import ua.myxazaur.cameraoverhaul.Tags;
 import ua.myxazaur.cameraoverhaul.camera.CameraContext;
 import ua.myxazaur.cameraoverhaul.camera.ScreenShakes;
@@ -112,8 +110,7 @@ public final class ClientHandler
 
     private static void handleExplosionCamera(SPacketExplosion packet) {
         mc.addScheduledTask(() -> {
-            EntityPlayerSP player = mc.player;
-            if (player == null) return;
+            if (mc.player == null) return;
 
             ScreenShakes.Slot shake = ScreenShakes.createDirect();
             shake.position.set(packet.getX(), packet.getY(), packet.getZ());
@@ -150,21 +147,19 @@ public final class ClientHandler
 
     // Hand swing handler
     @SubscribeEvent
-    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        Entity entity = event.getEntity();
+    public static void onTickPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        if (event.player != mc.player) return;
 
-        if (entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) entity;
-            if (player.isSwingInProgress && player.swingProgressInt == 0) {
-                shakeHandle = ScreenShakes.recreate(shakeHandle);
+        if (event.player.isSwingInProgress && event.player.swingProgressInt == 0) {
+            shakeHandle = ScreenShakes.recreate(shakeHandle);
 
-                ScreenShakes.Slot shake = ScreenShakes.get(shakeHandle);
-                shake.trauma = (float) CameraConfig.general.handSwingTrauma;
-                shake.frequency = 0.5f;
-                shake.lengthInSeconds = 0.5f;
+            ScreenShakes.Slot shake = ScreenShakes.get(shakeHandle);
+            shake.trauma = (float) CameraConfig.general.handSwingTrauma;
+            shake.frequency = 0.5f;
+            shake.lengthInSeconds = 0.5f;
 
-                CameraOverhaul.camera.notifyOfPlayerAction();
-            }
+            camera.notifyOfPlayerAction();
         }
     }
 }
