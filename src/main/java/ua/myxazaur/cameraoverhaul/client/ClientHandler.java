@@ -36,11 +36,33 @@ public final class ClientHandler
 {
     private static final Minecraft mc = Minecraft.getMinecraft();
 
+    private static boolean isEntityBlacklisted(Entity entity) {
+        if (entity == null) return true;
+
+        // Check if we should only process living entities
+        if (CameraConfig.general.onlyLivingEntities && !(entity instanceof EntityLivingBase)) {
+            return true;
+        }
+
+        // Check against blacklist
+        String className = entity.getClass().getName();
+        for (String blacklisted : CameraConfig.general.entityBlacklist) {
+            if (blacklisted != null && !blacklisted.isEmpty() && className.contains(blacklisted)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Main camera handler
     @SubscribeEvent
     public static void onEntityViewRenderCameraSetup(EntityViewRenderEvent.CameraSetup event) {
         Entity entity = mc.getRenderViewEntity();
-        if (entity == null) return;
+
+        // Skip if entity is blacklisted or camera effects are disabled
+        if (isEntityBlacklisted(entity)) return;
+        if (!CameraConfig.general.enabled) return;
 
         Entity vehicle = entity.getRidingEntity();
         Entity controlled = vehicle != null ? vehicle : entity;
@@ -81,7 +103,6 @@ public final class ClientHandler
             } else {
                 context.isSwimming = living.isInWater() && living.isSprinting();
             }
-
         }
 
         TimeSystem.update();
