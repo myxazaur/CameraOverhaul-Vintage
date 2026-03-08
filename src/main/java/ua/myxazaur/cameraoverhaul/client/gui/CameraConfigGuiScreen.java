@@ -143,6 +143,10 @@ public class CameraConfigGuiScreen extends GuiScreen {
         y = addField(generalFields, x, fieldX, y, "screenShakesMaxIntensity", g.screenShakesMaxIntensity, "general");
         y = addField(generalFields, x, fieldX, y, "screenShakesMaxFrequency", g.screenShakesMaxFrequency, "general");
         y = addField(generalFields, x, fieldX, y, "explosionTrauma", g.explosionTrauma, "general");
+
+        checkboxes.add(new ConfigCheckbox(x, y, "scaleExplosionByStrength", g.scaleExplosionByStrength));
+        y += ELEM_H;
+
         y = addField(generalFields, x, fieldX, y, "thunderTrauma", g.thunderTrauma, "general");
         y = addField(generalFields, x, fieldX, y, "handSwingTrauma", g.handSwingTrauma, "general");
 
@@ -360,6 +364,8 @@ public class CameraConfigGuiScreen extends GuiScreen {
         g.explosionTrauma = parseDouble(generalFields.get(i++));
         g.thunderTrauma = parseDouble(generalFields.get(i++));
         g.handSwingTrauma = parseDouble(generalFields.get(i));
+
+        g.scaleExplosionByStrength = checkboxes.get(2).isChecked();
 
         saveCurrentContext();
 

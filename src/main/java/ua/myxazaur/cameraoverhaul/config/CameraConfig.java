@@ -1,7 +1,3 @@
-// Copyright 2020-2025 Mirsario & Contributors.
-// Released under the GNU General Public License 3.0.
-// See LICENSE.md for details.
-
 package ua.myxazaur.cameraoverhaul.config;
 
 import net.minecraftforge.common.config.*;
@@ -51,6 +47,7 @@ public final class CameraConfig
         public double screenShakesMaxIntensity = 2.5;
         public double screenShakesMaxFrequency = 6.0;
         public double explosionTrauma = 1.00;
+        public boolean scaleExplosionByStrength = true;
         public double thunderTrauma = 0.05;
         public double handSwingTrauma = 0.03;
     }
