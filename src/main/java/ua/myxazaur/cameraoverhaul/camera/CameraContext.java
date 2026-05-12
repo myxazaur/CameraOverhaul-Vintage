@@ -21,12 +21,16 @@ public class CameraContext
 	public boolean isRiding;
 	public boolean isRidingMount;
 	public boolean isRidingVehicle;
-	public Vector3d velocity;
+	public Vector3d velocity = new Vector3d();
 	public Perspective perspective;
 	public Transform transform = new Transform();
 
+	private final Vector2d tempRotate = new Vector2d();
+	private final Vector3d tempForwardVel = new Vector3d();
+
 	public Vector3d getForwardRelativeVelocity() {
-		Vector2d temp = VectorUtils.rotate(new Vector2d(velocity.x, velocity.z), 360d - transform.eulerRot.y);
-		return new Vector3d(temp.x, velocity.y, temp.y);
+		tempRotate.set(velocity.x, velocity.z);
+		VectorUtils.rotate(tempRotate, 360d - transform.eulerRot.y, tempRotate);
+		return tempForwardVel.set(tempRotate.x, velocity.y, tempRotate.y);
 	}
 }

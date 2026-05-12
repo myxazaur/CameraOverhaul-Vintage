@@ -18,7 +18,7 @@ public class CameraConfigGuiScreen extends GuiScreen {
     private final Map<Context, double[]> tempContextValues = new HashMap<>();
 
     private enum Context {
-        WALKING, SWIMMING, FLYING, MOUNTS, VEHICLES;
+        WALKING, SPRINTING, SWIMMING, FLYING, MOUNTS, VEHICLES;
 
         String getDisplayName() {
             return I18n.format("cameraoverhaul.config.category." + name().toLowerCase());
@@ -37,6 +37,13 @@ public class CameraConfigGuiScreen extends GuiScreen {
     private static final int BTN_SAVE = 0, BTN_CANCEL = 1, BTN_CONTEXT_START = 100;
     private static final int FIELD_W = 70, FIELD_H = 16, LABEL_W = 110, ELEM_H = 22, GAP = 8;
 
+    // Contextual field options now include mouseSmoothing
+    private static final String[] CONTEXTUAL_OPTIONS = {
+            "strafingRollFactor", "forwardVelocityPitchFactor",
+            "verticalVelocityPitchFactor", "horizontalVelocitySmoothingFactor",
+            "verticalVelocitySmoothingFactor", "mouseSmoothing"
+    };
+
     public CameraConfigGuiScreen(GuiScreen parent) {
         this.parentScreen = parent;
     }
@@ -50,7 +57,7 @@ public class CameraConfigGuiScreen extends GuiScreen {
                 tempContextValues.put(ctx, new double[]{
                         cfg.strafingRollFactor, cfg.forwardVelocityPitchFactor,
                         cfg.verticalVelocityPitchFactor, cfg.horizontalVelocitySmoothingFactor,
-                        cfg.verticalVelocitySmoothingFactor
+                        cfg.verticalVelocitySmoothingFactor, cfg.mouseSmoothing
                 });
             }
         }
@@ -75,11 +82,12 @@ public class CameraConfigGuiScreen extends GuiScreen {
 
     private CameraConfig.Contextual getContextConfig(Context ctx) {
         switch (ctx) {
-            case SWIMMING: return CameraConfig.swimming;
-            case FLYING:   return CameraConfig.flying;
-            case MOUNTS:   return CameraConfig.mounts;
-            case VEHICLES: return CameraConfig.vehicles;
-            default:       return CameraConfig.walking;
+            case SPRINTING: return CameraConfig.sprinting;
+            case SWIMMING:  return CameraConfig.swimming;
+            case FLYING:    return CameraConfig.flying;
+            case MOUNTS:    return CameraConfig.mounts;
+            case VEHICLES:  return CameraConfig.vehicles;
+            default:        return CameraConfig.walking;
         }
     }
 
@@ -161,12 +169,8 @@ public class CameraConfigGuiScreen extends GuiScreen {
         int x = rightPanel.x + 8, baseY = rightPanel.getScrollableAreaTop() + 8, y = baseY;
         int fieldX = x + LABEL_W;
 
-        String[] options = {"strafingRollFactor", "forwardVelocityPitchFactor",
-                "verticalVelocityPitchFactor", "horizontalVelocitySmoothingFactor",
-                "verticalVelocitySmoothingFactor"};
-
-        for (int i = 0; i < options.length; i++) {
-            y = addField(contextualFields, x, fieldX, y, options[i], values[i], category) + 4;
+        for (int i = 0; i < CONTEXTUAL_OPTIONS.length; i++) {
+            y = addField(contextualFields, x, fieldX, y, CONTEXTUAL_OPTIONS[i], values[i], category) + 4;
         }
         rightPanel.setContentHeight(y - rightPanel.getScrollableAreaTop() + ELEM_H);
     }
@@ -339,9 +343,9 @@ public class CameraConfigGuiScreen extends GuiScreen {
     }
 
     private void saveCurrentContext() {
-        if (contextualFields.size() < 5) return;
-        double[] values = new double[5];
-        for (int i = 0; i < 5; i++) values[i] = parseDouble(contextualFields.get(i));
+        if (contextualFields.size() < CONTEXTUAL_OPTIONS.length) return;
+        double[] values = new double[CONTEXTUAL_OPTIONS.length];
+        for (int i = 0; i < CONTEXTUAL_OPTIONS.length; i++) values[i] = parseDouble(contextualFields.get(i));
         tempContextValues.put(currentContext, values);
     }
 
@@ -377,6 +381,7 @@ public class CameraConfigGuiScreen extends GuiScreen {
             cfg.verticalVelocityPitchFactor = vals[2];
             cfg.horizontalVelocitySmoothingFactor = vals[3];
             cfg.verticalVelocitySmoothingFactor = vals[4];
+            cfg.mouseSmoothing = vals[5];
         }
 
         net.minecraftforge.common.config.ConfigManager.sync(Tags.MOD_ID,

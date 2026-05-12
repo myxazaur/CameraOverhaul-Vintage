@@ -5,6 +5,7 @@ cameraoverhaul.config.category.contextual=Контекстні налаштув�
 
 # Контексти
 cameraoverhaul.config.category.walking=Ходьба
+cameraoverhaul.config.category.sprinting=Спринт
 cameraoverhaul.config.category.swimming=Плавання
 cameraoverhaul.config.category.flying=Політ
 cameraoverhaul.config.category.mounts=Тварини
@@ -31,6 +32,8 @@ cameraoverhaul.config.horizontalVelocitySmoothingFactor=Згладж. гориз
 cameraoverhaul.config.horizontalVelocitySmoothingFactor.desc=Плавність нахилів і крену, спричинених горизонтальним переміщенням.
 cameraoverhaul.config.verticalVelocitySmoothingFactor=Згладж. верт.
 cameraoverhaul.config.verticalVelocitySmoothingFactor.desc=Плавність нахилів камери, спричинених вертикальним переміщенням.
+cameraoverhaul.config.mouseSmoothing=Згладж. миші
+cameraoverhaul.config.mouseSmoothing.desc=Плавність обертання камери (вертикально та горизонтально), що залежить від рухів гравця.
 
 cameraoverhaul.config.turningRollAccumulation=Накопичення
 cameraoverhaul.config.turningRollAccumulation.desc=Чутливість крену камери, спричиненого горизонтальним поворотом миші.

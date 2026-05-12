@@ -5,6 +5,7 @@ cameraoverhaul.config.category.contextual=Контекстные настрой�
 
 # Контексты
 cameraoverhaul.config.category.walking=Ходьба
+cameraoverhaul.config.category.sprinting=Спринт
 cameraoverhaul.config.category.swimming=Плавание
 cameraoverhaul.config.category.flying=Полёт
 cameraoverhaul.config.category.mounts=Животные
@@ -31,6 +32,8 @@ cameraoverhaul.config.horizontalVelocitySmoothingFactor=Сглаж. гориз.
 cameraoverhaul.config.horizontalVelocitySmoothingFactor.desc=Плавность наклонов и крена, вызванных горизонтальным перемещением.
 cameraoverhaul.config.verticalVelocitySmoothingFactor=Сглаж. верт.
 cameraoverhaul.config.verticalVelocitySmoothingFactor.desc=Плавность наклонов камеры, вызванных вертикальным перемещением.
+cameraoverhaul.config.mouseSmoothing=Сглаж. мыши
+cameraoverhaul.config.mouseSmoothing.desc=Плавность вращения камеры (вертикаль и горизонталь), зависящая от движений игрока.
 
 cameraoverhaul.config.turningRollAccumulation=Накопление
 cameraoverhaul.config.turningRollAccumulation.desc=Чувствительность крена камеры, вызванного поворотом мыши по горизонтали.

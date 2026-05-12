@@ -11,10 +11,11 @@ public final class CameraConfig
 {
     public static General general = new General();
     public static Contextual walking = new Contextual();
-    public static Contextual swimming = new Contextual();
-    public static Contextual flying = new Contextual();
-    public static Contextual mounts = new Contextual();
-    public static Contextual vehicles = new Contextual();
+    public static Contextual sprinting = new Contextual(12.5, 9.5, 2.5, 1.0, 1.0, 0.8);
+    public static Contextual flying = new Contextual(-10.0, 7.0, 2.5, 1.0, 1.0, 1.0);
+    public static Contextual swimming = new Contextual(-30.0, 21.0, 7.5, 1.0, 1.0, 1.5);
+    public static Contextual mounts = new Contextual(20.0, 3.5, 2.5, 1.0, 1.0, 1.0);
+    public static Contextual vehicles = new Contextual(5.0, 3.5, 5.0, 1.0, 1.0, 0.0);
 
     public static final class General {
         public boolean enabled = true;
@@ -53,27 +54,24 @@ public final class CameraConfig
     }
 
     public static final class Contextual {
-        public double strafingRollFactor = 10.0;
-        public double forwardVelocityPitchFactor = 7.0;
-        public double verticalVelocityPitchFactor = 2.5;
-        public double horizontalVelocitySmoothingFactor = 1.0;
-        public double verticalVelocitySmoothingFactor = 1.0;
-    }
+        public double strafingRollFactor;
+        public double forwardVelocityPitchFactor;
+        public double verticalVelocityPitchFactor;
+        public double horizontalVelocitySmoothingFactor;
+        public double verticalVelocitySmoothingFactor;
+        public double mouseSmoothing;
 
-    static {
-        // Flying
-        flying.strafingRollFactor *= -1.0;
-        // Swimming
-        swimming.strafingRollFactor *= -3.0;
-        swimming.forwardVelocityPitchFactor *= 3.0;
-        swimming.verticalVelocityPitchFactor *= 3.0;
-        // Mounts
-        mounts.strafingRollFactor *= 2.0;
-        mounts.forwardVelocityPitchFactor *= 0.5;
-        // Vehicles
-        vehicles.strafingRollFactor *= 0.5;
-        vehicles.forwardVelocityPitchFactor *= 0.5;
-        vehicles.verticalVelocityPitchFactor *= 2.0;
+        public Contextual() { this(10.0, 7.0, 2.5, 1.0, 1.0, 0.0); }
+
+        public Contextual(double strafe, double forward, double vertical,
+                          double hSmooth, double vSmooth, double mouseSmooth) {
+            this.strafingRollFactor = strafe;
+            this.forwardVelocityPitchFactor = forward;
+            this.verticalVelocityPitchFactor = vertical;
+            this.horizontalVelocitySmoothingFactor = hSmooth;
+            this.verticalVelocitySmoothingFactor = vSmooth;
+            this.mouseSmoothing = mouseSmooth;
+        }
     }
 
     @Mod.EventBusSubscriber(modid = Tags.MOD_ID)

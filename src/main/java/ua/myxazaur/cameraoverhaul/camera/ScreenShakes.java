@@ -1,6 +1,8 @@
-package ua.myxazaur.cameraoverhaul.camera;// Copyright 2020-2025 Mirsario & Contributors.
+// Copyright 2020-2025 Mirsario & Contributors.
 // Released under the GNU General Public License 3.0.
 // See LICENSE.md for details.
+
+package ua.myxazaur.cameraoverhaul.camera;
 
 import org.joml.*;
 import org.joml.Math;

@@ -3,6 +3,7 @@ package ua.myxazaur.cameraoverhaul.config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import ua.myxazaur.cameraoverhaul.CameraOverhaul;
 import ua.myxazaur.cameraoverhaul.Tags;
 
 import javax.annotation.Nullable;
@@ -12,7 +13,7 @@ import java.util.Objects;
 public final class ConfigDefaultsUtil
 {
     public static @Nullable String getDefault(String categoryName, String optionName) {
-        return getForgeConfiguration(Tags.MOD_ID, null).getCategory("general").getChildren().stream()
+        return getForgeConfiguration().getCategory("general").getChildren().stream()
                 .filter(cat -> cat.getName().equalsIgnoreCase(categoryName))
                 .map(cat -> cat.get(optionName))
                 .filter(Objects::nonNull)
@@ -34,13 +35,17 @@ public final class ConfigDefaultsUtil
         return Boolean.parseBoolean(o.toString());
     }
 
-    private static Configuration getForgeConfiguration(String modid, String name) {
-        try {
-            Method m = ConfigManager.class.getDeclaredMethod("getConfiguration", String.class, String.class);
-            m.setAccessible(true);
-            return (Configuration) m.invoke(null, modid, name);
-        } catch (Throwable t) {
-            return null;
+    private static Configuration cachedConfig;
+    private static Configuration getForgeConfiguration() {
+        if (cachedConfig == null) {
+            try {
+                Method m = ConfigManager.class.getDeclaredMethod("getConfiguration", String.class, String.class);
+                m.setAccessible(true);
+                cachedConfig = (Configuration) m.invoke(null, Tags.MOD_ID, (String) null);
+            } catch (Throwable t) {
+                CameraOverhaul.log.error("Failed to get config", t);
+            }
         }
+        return cachedConfig;
     }
 }

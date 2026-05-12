@@ -3,6 +3,7 @@ package ua.myxazaur.cameraoverhaul.client;
 import com.fuzs.aquaacrobatics.entity.player.IPlayerResizeable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -17,14 +18,11 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.opengl.GL11;
 import ua.myxazaur.cameraoverhaul.Tags;
 import ua.myxazaur.cameraoverhaul.camera.CameraContext;
 import ua.myxazaur.cameraoverhaul.camera.ScreenShakes;
 import ua.myxazaur.cameraoverhaul.camera.TimeSystem;
 import ua.myxazaur.cameraoverhaul.config.CameraConfig;
-import ua.myxazaur.cameraoverhaul.utils.Transform;
-import org.joml.Vector3d;
 
 import java.lang.reflect.Field;
 
@@ -54,9 +52,9 @@ public final class ClientHandler
         return false;
     }
 
-    // Main camera handler
+    /// Main camera handler
     @SubscribeEvent
-    public static void onEntityViewRenderCameraSetup(EntityViewRenderEvent.CameraSetup event) {
+    public static void onCameraSetup(EntityViewRenderEvent.CameraSetup event) {
         Entity entity = mc.getRenderViewEntity();
 
         if (isEntityBlacklisted(entity)) return;
@@ -69,19 +67,18 @@ public final class ClientHandler
         context.isRidingMount = vehicle instanceof EntityAnimal;
         context.isRidingVehicle = context.isRiding && !(vehicle instanceof EntityLivingBase);
 
-        context.velocity = new Vector3d(controlled.motionX, controlled.motionY, controlled.motionZ);
+        context.velocity.set(controlled.motionX, controlled.motionY, controlled.motionZ);
 
-        context.transform = new Transform(
-                new Vector3d(
-                        entity.prevPosX + (entity.posX - entity.prevPosX) * event.getRenderPartialTicks(),
-                        entity.prevPosY + (entity.posY - entity.prevPosY) * event.getRenderPartialTicks(),
-                        entity.prevPosZ + (entity.posZ - entity.prevPosZ) * event.getRenderPartialTicks()
-                ),
-                new Vector3d(
-                        entity.rotationPitch,
-                        entity.rotationYaw,
-                        0
-                )
+        context.transform.position.set(
+                entity.prevPosX + (entity.posX - entity.prevPosX) * event.getRenderPartialTicks(),
+                entity.prevPosY + (entity.posY - entity.prevPosY) * event.getRenderPartialTicks(),
+                entity.prevPosZ + (entity.posZ - entity.prevPosZ) * event.getRenderPartialTicks()
+        );
+
+        context.transform.eulerRot.set(
+                entity.rotationPitch,
+                entity.rotationYaw,
+                0
         );
 
         context.perspective =
@@ -105,12 +102,12 @@ public final class ClientHandler
         camera.onCameraUpdate(context, TimeSystem.getDeltaTime());
         camera.modifyCameraTransform(context.transform);
 
-        GL11.glRotatef((float) context.transform.eulerRot.z, 0f, 0f, 1f);
-        GL11.glRotatef((float) (context.transform.eulerRot.x - entity.rotationPitch), 1f, 0f, 0f);
-        GL11.glRotatef((float) (context.transform.eulerRot.y - entity.rotationYaw), 0f, 1f, 0f);
+        GlStateManager.rotate((float) context.transform.eulerRot.z, 0f, 0f, 1f);
+        GlStateManager.rotate((float) (context.transform.eulerRot.x - entity.rotationPitch), 1f, 0f, 0f);
+        GlStateManager.rotate((float) (context.transform.eulerRot.y - entity.rotationYaw), 0f, 1f, 0f);
     }
 
-    // Explosion handler
+    /// Explosion handler
     @SubscribeEvent
     public static void onExplosion(ExplosionEvent.Detonate event) {
         Explosion explosion = event.getExplosion();
@@ -137,9 +134,9 @@ public final class ClientHandler
         }
     }
 
-    // Lightning strike handler
+    /// Lightning strike handler
     @SubscribeEvent
-    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+    public static void onLightningStrike(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
 
         if (entity instanceof EntityLightningBolt) {
@@ -162,11 +159,11 @@ public final class ClientHandler
 
     private static long shakeHandle;
 
-    // Hand swing handler
+    /// Hand swing handler
     @SubscribeEvent
-    public static void onTickPlayerTick(TickEvent.PlayerTickEvent event) {
+    public static void onPlayerSwing(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        if (event.player != mc.player) return;
+        if (event.player != mc.player) return; // Handle only our player
 
         if (event.player.isSwingInProgress && event.player.swingProgressInt == 0) {
             shakeHandle = ScreenShakes.recreate(shakeHandle);

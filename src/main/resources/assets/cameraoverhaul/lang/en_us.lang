@@ -5,6 +5,7 @@ cameraoverhaul.config.category.contextual=Contextual Settings
 
 # Contexts
 cameraoverhaul.config.category.walking=Walking
+cameraoverhaul.config.category.sprinting=Sprinting
 cameraoverhaul.config.category.swimming=Swimming
 cameraoverhaul.config.category.flying=Flying
 cameraoverhaul.config.category.mounts=Mounts
@@ -31,6 +32,8 @@ cameraoverhaul.config.horizontalVelocitySmoothingFactor=H. Smoothing
 cameraoverhaul.config.horizontalVelocitySmoothingFactor.desc=Smoothness of camera pitch & roll rotations caused by moving horizontally.
 cameraoverhaul.config.verticalVelocitySmoothingFactor=V. Smoothing
 cameraoverhaul.config.verticalVelocitySmoothingFactor.desc=Smoothness of camera pitch rotations caused by moving vertically.
+cameraoverhaul.config.mouseSmoothing=M. Smoothing
+cameraoverhaul.config.mouseSmoothing.desc=Smoothness of pitch & yaw controlled by player input.
 
 cameraoverhaul.config.turningRollAccumulation=Accumulation
 cameraoverhaul.config.turningRollAccumulation.desc=Sensitivity of the camera roll rotation caused by turning around horizontally.

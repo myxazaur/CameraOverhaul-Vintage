@@ -23,6 +23,14 @@ public final class VectorUtils
 		return new Vector2d((cos * vec.x) - (sin * vec.y), (sin * vec.x) + (cos * vec.y));
 	}
 
+	public static void rotate(Vector2d vec, double degrees, Vector2d out) {
+		double radians = Math.toRadians(degrees);
+		double sin = Math.sin(radians);
+		double cos = Math.cos(radians);
+		double x = vec.x, y = vec.y;
+		out.set((cos * x) - (sin * y), (sin * x) + (cos * y));
+	}
+
 	public static Vector2d lerp(Vector2d src, Vector2d dst, double step) {
 		return lerp(src.x, src.y, dst.x, dst.y, step);
 	}
