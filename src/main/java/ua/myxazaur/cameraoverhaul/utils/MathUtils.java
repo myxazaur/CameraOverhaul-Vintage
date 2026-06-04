@@ -4,8 +4,9 @@
 
 package ua.myxazaur.cameraoverhaul.utils;
 
-public final class MathUtils
-{
+public final class MathUtils {
+	public static final float DEG_TO_RAD = (float)(Math.PI / 180f);
+	public static final float RAD_TO_DEG = 180f / (float)Math.PI;
 	// Clamp
 
 	public static float clamp(float value, float min, float max) {
@@ -34,13 +35,20 @@ public final class MathUtils
 	// https://www.rorydriscoll.com/2016/03/07/frame-rate-independent-damping-using-lerp
 
 	public static float damp(float source, float destination, float smoothing, float dt) {
-		return lerp(source, destination, 1f - (float)Math.pow(smoothing * smoothing, dt));
+		return lerp(source, destination, dampStep(smoothing, dt));
 	}
 	public static double damp(double source, double destination, double smoothing, double dt) {
-		return lerp(source, destination, 1d - Math.pow(smoothing * smoothing, dt));
+		return lerp(source, destination, dampStep(smoothing, dt));
+	}
+	public static float dampStep(float smoothing, float dt) {
+		return 1f - (float)Math.pow(smoothing * smoothing, dt);
+	}
+	public static double dampStep(double smoothing, double dt) {
+		return 1d - Math.pow(smoothing * smoothing, dt);
 	}
 
 	// Step towards
+
 	public static double stepTowards(double current, double target, double step) {
 		if (current < target) {
 			return Math.min(current + step, target);

@@ -128,7 +128,9 @@ public class CameraConfigGuiScreen extends GuiScreen {
         checkboxes.add(new ConfigCheckbox(x, y, "enabled", g.enabled));
         y += ELEM_H;
         checkboxes.add(new ConfigCheckbox(x, y, "enableInThirdPerson", g.enableInThirdPerson));
-        y += ELEM_H + GAP;
+        y += ELEM_H;
+        y = addField(generalFields, x, fieldX, y, "contextTransitionSmoothing", g.contextTransitionSmoothing, "general");
+        y += GAP;
 
         // Turning Roll section
         y = addSection(x, y, "turningRoll");
@@ -355,6 +357,8 @@ public class CameraConfigGuiScreen extends GuiScreen {
         g.enableInThirdPerson = checkboxes.get(1).isChecked();
 
         int i = 0;
+        g.contextTransitionSmoothing = parseDouble(generalFields.get(i++));
+
         g.turningRollAccumulation = parseDouble(generalFields.get(i++));
         g.turningRollIntensity = parseDouble(generalFields.get(i++));
         g.turningRollSmoothing = parseDouble(generalFields.get(i++));

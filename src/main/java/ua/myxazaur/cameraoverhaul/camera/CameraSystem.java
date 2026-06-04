@@ -26,12 +26,7 @@ public final class CameraSystem {
 	public void onCameraUpdate(CameraContext context, double deltaTime) {
 		double time = TimeSystem.getTime();
 
-		if (context.isRidingVehicle) ctxCfg = CameraConfig.vehicles;
-		else if (context.isRidingMount) ctxCfg = CameraConfig.mounts;
-		else if (context.isSwimming) ctxCfg = CameraConfig.swimming;
-		else if (context.isFlying) ctxCfg = CameraConfig.flying;
-		else if (context.isSprinting) ctxCfg = CameraConfig.sprinting;
-		else ctxCfg = CameraConfig.walking;
+		updateContext(context, deltaTime);
 
 		// Reset the offset transform
 		offsetTransform.position = new Vector3d(0, 0, 0);
@@ -50,7 +45,7 @@ public final class CameraSystem {
 		}
 
 		// XY
-		mouseSmoothingOffset(context, offsetTransform, deltaTime);
+		cameraSmoothingOffset(context, offsetTransform, deltaTime);
 		noiseOffset(context, offsetTransform, deltaTime);
 		// X
 		verticalVelocityPitchOffset(context, offsetTransform, deltaTime);
@@ -64,6 +59,21 @@ public final class CameraSystem {
 		prevCameraPerspective = context.perspective;
 	}
 
+	void updateContext(CameraContext context, double deltaTime) {
+		if (ctxCfg == null) ctxCfg = CameraConfig.walking.clone();
+
+		CameraConfig.Contextual target;
+		if (context.isRidingVehicle) target = CameraConfig.vehicles;
+		else if (context.isRidingMount) target = CameraConfig.mounts;
+		else if (context.isSwimming) target = CameraConfig.swimming;
+		else if (context.isFlying) target = CameraConfig.flying;
+		else if (context.isSprinting) target = CameraConfig.sprinting;
+		else target = CameraConfig.walking;
+
+		double smoothing = CameraConfig.general.contextTransitionSmoothing > 0 ? MathUtils.dampStep(CameraConfig.general.contextTransitionSmoothing, deltaTime) : 1;
+		ctxCfg.lerp(ctxCfg, target, MathUtils.dampStep(smoothing, deltaTime));
+	}
+
 	public void modifyCameraTransform(Transform transform) {
 		transform.position.add(offsetTransform.position);
 		transform.eulerRot.add(offsetTransform.eulerRot);
@@ -75,23 +85,14 @@ public final class CameraSystem {
 	private static final double VERTICAL_PITCH_THRESHOLD = 0.4;
 	private double prevVerticalVelocityPitchOffset;
 
-	private void verticalVelocityPitchOffset(
-			CameraContext context,
-			Transform outputTransform,
-			double deltaTime
-	) {
+	private void verticalVelocityPitchOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double multiplier = ctxCfg.verticalVelocityPitchFactor;
 		double smoothing = BASE_VERTICAL_PITCH_SMOOTHING * ctxCfg.verticalVelocitySmoothingFactor;
 
 		double targetOffset = context.velocity.y * multiplier;
 		// Apply threshold on target, in order to fix slime block shake.
 		if (Math.abs(targetOffset) < VERTICAL_PITCH_THRESHOLD) { targetOffset = 0; }
-		double currentOffset = MathUtils.damp(
-				prevVerticalVelocityPitchOffset,
-				targetOffset,
-				smoothing,
-				deltaTime
-		);
+		double currentOffset = MathUtils.damp(prevVerticalVelocityPitchOffset, targetOffset, smoothing, deltaTime);
 
 		outputTransform.eulerRot.x += currentOffset;
 		prevVerticalVelocityPitchOffset = currentOffset;
@@ -100,21 +101,12 @@ public final class CameraSystem {
 	private static final double BASE_FORWARD_PITCH_SMOOTHING = 0.008;
 	private double prevForwardVelocityPitchOffset;
 
-	private void forwardVelocityPitchOffset(
-			CameraContext context,
-			Transform outputTransform,
-			double deltaTime
-	) {
+	private void forwardVelocityPitchOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double multiplier = ctxCfg.forwardVelocityPitchFactor;
 		double smoothing = BASE_FORWARD_PITCH_SMOOTHING * ctxCfg.horizontalVelocitySmoothingFactor;
 
 		double targetOffset = context.getForwardRelativeVelocity().z * multiplier;
-		double currentOffset = MathUtils.damp(
-				prevForwardVelocityPitchOffset,
-				targetOffset,
-				smoothing,
-				deltaTime
-		);
+		double currentOffset = MathUtils.damp(prevForwardVelocityPitchOffset, targetOffset, smoothing, deltaTime);
 
 		outputTransform.eulerRot.x += currentOffset;
 		prevForwardVelocityPitchOffset = currentOffset;
@@ -125,11 +117,7 @@ public final class CameraSystem {
 	private static final double BASE_TURNING_ROLL_SMOOTHING = 0.0825;
 	private double turningRollTargetOffset;
 
-	private void turningRollOffset(
-			CameraContext context,
-			Transform outputTransform,
-			double deltaTime
-	) {
+	private void turningRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double decaySmoothing = BASE_TURNING_ROLL_SMOOTHING * CameraConfig.general.turningRollSmoothing;
 		double intensity = BASE_TURNING_ROLL_INTENSITY * CameraConfig.general.turningRollIntensity;
 		double accumulation = BASE_TURNING_ROLL_ACCUMULATION * CameraConfig.general.turningRollAccumulation;
@@ -139,23 +127,11 @@ public final class CameraSystem {
 		if (context.perspective != prevCameraPerspective) yawDelta = 0.0;
 
 		// Decay
-		turningRollTargetOffset = MathUtils.damp(
-				turningRollTargetOffset,
-				0,
-				decaySmoothing,
-				deltaTime
-		);
+		turningRollTargetOffset = MathUtils.damp(turningRollTargetOffset, 0, decaySmoothing, deltaTime);
 		// Accumulation
-		turningRollTargetOffset = MathUtils.clamp(
-				turningRollTargetOffset + (yawDelta * accumulation),
-				-1.0,
-				1.0
-		);
+		turningRollTargetOffset = MathUtils.clamp(turningRollTargetOffset + (yawDelta * accumulation), -1.0, 1.0);
 		// Apply
-		double turningRollOffset =
-				MathUtils.clamp01(turningEasing(Math.abs(turningRollTargetOffset))) *
-						intensity *
-						Math.signum(turningRollTargetOffset);
+		double turningRollOffset = MathUtils.clamp01(turningEasing(Math.abs(turningRollTargetOffset))) * intensity * Math.signum(turningRollTargetOffset);
 		outputTransform.eulerRot.z += turningRollOffset;
 	}
 
@@ -167,11 +143,7 @@ public final class CameraSystem {
 	private static final double BASE_STRAFING_ROLL_SMOOTHING = 0.008;
 	private double prevStrafingRollOffset;
 
-	private void strafingRollOffset(
-			CameraContext context,
-			Transform outputTransform,
-			double deltaTime
-	) {
+	private void strafingRollOffset(CameraContext context, Transform outputTransform, double deltaTime) {
 		double multiplier = ctxCfg.strafingRollFactor;
 		double smoothing = BASE_STRAFING_ROLL_SMOOTHING * ctxCfg.horizontalVelocitySmoothingFactor;
 
@@ -199,17 +171,9 @@ public final class CameraSystem {
 			cameraSwayFactorTarget = 1; // Fade-in
 		}
 
-		double cameraSwayFactorFadeLength =
-				cameraSwayFactorTarget > 0
-						? CameraConfig.general.cameraSwayFadeInLength
-						: CameraConfig.general.cameraSwayFadeOutLength;
-		double cameraSwayFactorFadeStep =
-				cameraSwayFactorFadeLength > 0.0 ? deltaTime / cameraSwayFactorFadeLength : 1.0;
-		cameraSwayFactor = MathUtils.stepTowards(
-				cameraSwayFactor,
-				cameraSwayFactorTarget,
-				cameraSwayFactorFadeStep
-		);
+		double cameraSwayFactorFadeLength = cameraSwayFactorTarget > 0 ? CameraConfig.general.cameraSwayFadeInLength : CameraConfig.general.cameraSwayFadeOutLength;
+		double cameraSwayFactorFadeStep = cameraSwayFactorFadeLength > 0.0 ? deltaTime / cameraSwayFactorFadeLength : 1.0;
+		cameraSwayFactor = MathUtils.stepTowards(cameraSwayFactor, cameraSwayFactorTarget, cameraSwayFactorFadeStep);
 
 		double scaledIntensity =
 				CameraConfig.general.cameraSwayIntensity *
@@ -228,19 +192,12 @@ public final class CameraSystem {
 	private double prevYawNorm, prevPitchNorm; // last frame's normalized (vanilla) angles
 	private double contYaw, contPitch; // continuous, unwrapped stream
 	private double smYaw, smPitch; // actual angle
-	private double smoothedMouseSmoothing;
 
 	private static final double BASE_MOUSE_SMOOTHING = 16.0;
-	private static final double MOUSE_SMOOTHING_INCREASE_SMOOTHING = 0.35;
-	private static final double MOUSE_SMOOTHING_DECREASE_SMOOTHING = 0.08;
 	private static final double MOUSE_SMOOTHING_THRESHOLD = 0.001;
 
-	private void mouseSmoothingOffset(
-			CameraContext context,
-			Transform outputTransform,
-			double deltaTime
-	) {
-		final double mouseSmoothingTarget = Math.max(0.0, ctxCfg.mouseSmoothing);
+	private void cameraSmoothingOffset(CameraContext context, Transform outputTransform, double deltaTime) {
+		final double cameraSmoothingValue = Math.max(0.0, ctxCfg.mouseSmoothing);
 
 		final double yawNow = context.transform.eulerRot.y;
 		final double pitchNow = context.transform.eulerRot.x;
@@ -253,7 +210,6 @@ public final class CameraSystem {
 			contPitch = pitchNow;
 			smYaw = yawNow;
 			smPitch = pitchNow;
-			smoothedMouseSmoothing = mouseSmoothingTarget;
 			msInit = true;
 			return;
 		}
@@ -267,24 +223,13 @@ public final class CameraSystem {
 		contYaw += stepYaw;
 		contPitch += stepPitch;
 
-		final double smoothing =
-				mouseSmoothingTarget > smoothedMouseSmoothing
-						? MOUSE_SMOOTHING_INCREASE_SMOOTHING
-						: MOUSE_SMOOTHING_DECREASE_SMOOTHING;
-		smoothedMouseSmoothing = MathUtils.damp(
-				smoothedMouseSmoothing,
-				mouseSmoothingTarget,
-				smoothing,
-				deltaTime
-		);
-
-		if (Math.max(mouseSmoothingTarget, smoothedMouseSmoothing) <= MOUSE_SMOOTHING_THRESHOLD) {
+		if (cameraSmoothingValue <= MOUSE_SMOOTHING_THRESHOLD) {
 			smYaw = contYaw;
 			smPitch = contPitch;
 			return;
 		}
 
-		final double k = BASE_MOUSE_SMOOTHING / smoothedMouseSmoothing;
+		final double k = BASE_MOUSE_SMOOTHING / cameraSmoothingValue;
 		final double step = 1.0 - Math.exp(-k * Math.max(0.0, deltaTime));
 
 		final double dYaw = contYaw - smYaw;

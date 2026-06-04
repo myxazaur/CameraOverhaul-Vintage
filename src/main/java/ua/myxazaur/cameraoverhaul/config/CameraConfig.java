@@ -5,13 +5,14 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import ua.myxazaur.cameraoverhaul.Tags;
+import ua.myxazaur.cameraoverhaul.utils.MathUtils;
 
 @Config(modid = Tags.MOD_ID)
 public final class CameraConfig
 {
     public static General general = new General();
     public static Contextual walking = new Contextual();
-    public static Contextual sprinting = new Contextual(12.5, 9.5, 2.5, 1.0, 1.0, 0.8);
+    public static Contextual sprinting = new Contextual(12.5, 9.5, 2.5, 1.0, 1.0, 0.6);
     public static Contextual flying = new Contextual(-10.0, 7.0, 2.5, 1.0, 1.0, 1.0);
     public static Contextual swimming = new Contextual(-30.0, 21.0, 7.5, 1.0, 1.0, 1.5);
     public static Contextual mounts = new Contextual(20.0, 3.5, 2.5, 1.0, 1.0, 1.0);
@@ -20,6 +21,7 @@ public final class CameraConfig
     public static final class General {
         public boolean enabled = true;
         public boolean enableInThirdPerson = true;
+        public double contextTransitionSmoothing = 0.1;
 
         @Config.Comment({
                 "List of entity class names to ignore for camera effects.",
@@ -53,7 +55,7 @@ public final class CameraConfig
         public double handSwingTrauma = 0.03;
     }
 
-    public static final class Contextual {
+    public static final class Contextual implements Cloneable {
         public double strafingRollFactor;
         public double forwardVelocityPitchFactor;
         public double verticalVelocityPitchFactor;
@@ -71,6 +73,20 @@ public final class CameraConfig
             this.horizontalVelocitySmoothingFactor = hSmooth;
             this.verticalVelocitySmoothingFactor = vSmooth;
             this.mouseSmoothing = mouseSmooth;
+        }
+
+        public void lerp(Contextual a, Contextual b, double step) {
+            strafingRollFactor = MathUtils.lerp(a.strafingRollFactor, b.strafingRollFactor, step);
+            forwardVelocityPitchFactor = MathUtils.lerp(a.forwardVelocityPitchFactor, b.forwardVelocityPitchFactor, step);
+            verticalVelocityPitchFactor = MathUtils.lerp(a.verticalVelocityPitchFactor, b.verticalVelocityPitchFactor, step);
+            horizontalVelocitySmoothingFactor = MathUtils.lerp(a.horizontalVelocitySmoothingFactor, b.horizontalVelocitySmoothingFactor, step);
+            verticalVelocitySmoothingFactor = MathUtils.lerp(a.verticalVelocitySmoothingFactor, b.verticalVelocitySmoothingFactor, step);
+            mouseSmoothing = MathUtils.lerp(a.mouseSmoothing, b.mouseSmoothing, step);
+        }
+
+        public Contextual clone() {
+            try { return (Contextual)super.clone(); }
+            catch (CloneNotSupportedException e) { return null; }
         }
     }
 

@@ -21,6 +21,8 @@ cameraoverhaul.config.enabled=Увімкнено
 cameraoverhaul.config.enabled.desc=Вмикає або вимикає всі функції моду.
 cameraoverhaul.config.enableInThirdPerson=Від 3-ї особи
 cameraoverhaul.config.enableInThirdPerson.desc=Вимкніть, щоб ефекти моду працювали лише у режимі від першої особи.
+cameraoverhaul.config.contextTransitionSmoothing=Згладж. переходів
+cameraoverhaul.config.contextTransitionSmoothing.desc=Плавність зміни параметрів камери під час зміни контексту руху (наприклад, від Ходьби до Спринту).
 
 cameraoverhaul.config.strafingRollFactor=Крен під час стрейфу
 cameraoverhaul.config.strafingRollFactor.desc=Сила крену камери, спричиненого боковим рухом або горизонтальною бічною швидкістю.

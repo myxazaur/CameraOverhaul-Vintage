@@ -3,7 +3,6 @@ package ua.myxazaur.cameraoverhaul.client;
 import com.fuzs.aquaacrobatics.entity.player.IPlayerResizeable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -76,8 +75,8 @@ public final class ClientHandler
         );
 
         context.transform.eulerRot.set(
-                entity.rotationPitch,
-                entity.rotationYaw,
+                event.getPitch(),
+                event.getYaw(),
                 0
         );
 
@@ -98,13 +97,16 @@ public final class ClientHandler
             }
         }
 
-        TimeSystem.update();
-        camera.onCameraUpdate(context, TimeSystem.getDeltaTime());
+        if (!mc.isGamePaused()) {
+            TimeSystem.update();
+            camera.onCameraUpdate(context, TimeSystem.getDeltaTime());
+        }
+
         camera.modifyCameraTransform(context.transform);
 
-        GlStateManager.rotate((float) context.transform.eulerRot.z, 0f, 0f, 1f);
-        GlStateManager.rotate((float) (context.transform.eulerRot.x - entity.rotationPitch), 1f, 0f, 0f);
-        GlStateManager.rotate((float) (context.transform.eulerRot.y - entity.rotationYaw), 0f, 1f, 0f);
+        event.setPitch((float) context.transform.eulerRot.x);
+        event.setYaw((float) context.transform.eulerRot.y);
+        event.setRoll((float) -context.transform.eulerRot.z);
     }
 
     /// Explosion handler

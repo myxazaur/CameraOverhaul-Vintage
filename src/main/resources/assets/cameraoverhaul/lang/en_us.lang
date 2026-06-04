@@ -21,6 +21,8 @@ cameraoverhaul.config.enabled=Enabled
 cameraoverhaul.config.enabled.desc=Toggles all of the mod's features.
 cameraoverhaul.config.enableInThirdPerson=Third Person
 cameraoverhaul.config.enableInThirdPerson.desc=Disable this to make the mod's effects exclusive to first-person view.
+cameraoverhaul.config.contextTransitionSmoothing=Transition Smooth
+cameraoverhaul.config.contextTransitionSmoothing.desc=Smoothness of the camera parameters transition when switching between movement contexts (e.g., Walking to Sprinting).
 
 cameraoverhaul.config.strafingRollFactor=Strafing Roll
 cameraoverhaul.config.strafingRollFactor.desc=Strength of the camera roll rotation caused by strafing, or sideway horizontal velocity.
