@@ -15,7 +15,6 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import ua.myxazaur.cameraoverhaul.Tags;
 import ua.myxazaur.cameraoverhaul.camera.CameraContext;
@@ -89,9 +88,12 @@ public final class ClientHandler
             EntityLivingBase living = (EntityLivingBase) entity;
             context.isFlying = living.isElytraFlying();
             context.isSprinting = living.isSprinting();
-            if (entity instanceof EntityPlayerSP && aquaAcrobatics) {
-                EntityPlayerSP player = (EntityPlayerSP) entity;
-                context.isSwimming = ((IPlayerResizeable) player).isSwimming();
+
+            if (aquaAcrobatics) {
+                if (entity instanceof EntityPlayerSP) {
+                    EntityPlayerSP player = (EntityPlayerSP) entity;
+                    context.isSwimming = ((IPlayerResizeable) player).isSwimming();
+                }
             } else {
                 context.isSwimming = living.isInWater() && living.isSprinting();
             }
@@ -156,26 +158,6 @@ public final class ClientHandler
             thunder.trauma = (float) CameraConfig.general.thunderTrauma;
             thunder.frequency = 0.5f;
             thunder.lengthInSeconds = 7f;
-        }
-    }
-
-    private static long shakeHandle;
-
-    /// Hand swing handler
-    @SubscribeEvent
-    public static void onPlayerSwing(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        if (event.player != mc.player) return; // Handle only our player
-
-        if (event.player.isSwingInProgress && event.player.swingProgressInt == 0) {
-            shakeHandle = ScreenShakes.recreate(shakeHandle);
-
-            ScreenShakes.Slot shake = ScreenShakes.get(shakeHandle);
-            shake.trauma = (float) CameraConfig.general.handSwingTrauma;
-            shake.frequency = 0.5f;
-            shake.lengthInSeconds = 0.5f;
-
-            camera.notifyOfPlayerAction();
         }
     }
 }
